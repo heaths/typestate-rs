@@ -5,12 +5,6 @@ on:
     branches:
     - main
   workflow_dispatch:
-    inputs:
-        publish:
-          description: Whether to publish documentation.
-          required: false
-          type: boolean
-          default: true
 
 permissions:
   contents: read
@@ -42,5 +36,4 @@ jobs:
           path: target/doc
       - name: Deploy to GitHub Pages
         id: deployment
-        if: ${{ success() && (inputs.publish || github.event_name != 'workflow_call') }}
         uses: actions/deploy-pages@v4

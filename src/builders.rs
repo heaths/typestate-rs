@@ -41,6 +41,7 @@ impl<C, A> Default for BlobClientBuilder<C, A> {
     }
 }
 
+/// The initial `BlobClientBuilder`. You must set an endpoint or connection string.
 impl BlobClientBuilder<Unset, Unset> {
     /// Creates a new `BlobClientBuilder`.
     pub fn new() -> Self {
@@ -80,6 +81,7 @@ impl BlobClientBuilder<Unset, Unset> {
     }
 }
 
+/// A `BlobClientBuilder` with an endpoint set, but requiring either a credential or SAS token.
 impl BlobClientBuilder<Set, Unset> {
     /// Sets the credential to use for the endpoint.
     pub fn with_credential(
@@ -111,6 +113,8 @@ impl BlobClientBuilder<Set, Unset> {
     }
 }
 
+/// A `BlobClientBuilder` with all required state set and ready for additional options,
+/// or to call [`BlobClientBuilder::build()`] to construct the final [`BlobClient`].
 impl BlobClientBuilder<Set, Set> {
     /// Overrides the `api-version` query parameter to the endpoint.
     pub fn with_api_version(self, api_version: impl Into<String>) -> Self {

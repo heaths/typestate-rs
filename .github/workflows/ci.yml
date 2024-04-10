@@ -36,11 +36,13 @@ jobs:
     - name: Set up toolchain
       run: rustup show
     - name: Check formatting
-      if: ${{ success() && (!inputs.release || github.event_name != 'workflow_call') }}
+      if: ${{ success() && (!inputs.release || github.event_name == 'push') }}
       run: cargo fmt --all -- --check
     - name: Test
       run: cargo test --all-features --workspace
     - name: Lint
       run: cargo clippy --all-features --all-targets --no-deps --workspace
     - name: Build documentation
-      run: cargo doc --all-features --no-deps --workspace
+      uses: ./.github/workflows/docs.yml
+      with:
+        publish: false

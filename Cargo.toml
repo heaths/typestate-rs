@@ -2,7 +2,28 @@
 name = "azure_typestate_example"
 version = "0.1.0"
 edition = "2021"
-repository = "https://github.com/heaths/typestate-rs"
 license = "MIT"
+publish = false
 
 [dependencies]
+azure_core = { workspace = true }
+azure_identity = { workspace = true }
+serde = { workspace = true }
+
+[dev-dependencies]
+tokio = { workspace = true }
+
+[workspace]
+resolver = "2"
+members = [
+    "core",
+    "identity",
+]
+
+[workspace.dependencies]
+azure_core = { version = "0.1.0", path = "core" }
+azure_identity = { version = "0.1.0", path = "identity" }
+bytes = { version = "1.6.0", features = ["serde"] }
+serde = { version = "1.0.197", features = ["derive"] }
+tokio = { version = "1.37.0", features = ["rt-multi-thread", "macros"] }
+url = "2.5.0"

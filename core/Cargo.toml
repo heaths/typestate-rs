@@ -1,0 +1,10 @@
+[package]
+name = "azure_core"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+publish = false
+
+[dependencies]
+bytes = { workspace = true }
+url = { workspace = true }

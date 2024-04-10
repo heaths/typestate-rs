@@ -1,0 +1,8 @@
+[package]
+name = "azure_typestate_example"
+version = "0.1.0"
+edition = "2021"
+repository = "https://github.com/heaths/typestate-rs"
+license = "MIT"
+
+[dependencies]

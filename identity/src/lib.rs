@@ -3,7 +3,7 @@
 
 use azure_core::TokenCredential;
 
-#[derive(Clone, Default)]
+#[derive(Clone, Debug, Default)]
 pub struct DefaultAzureCredential {}
 
 impl TokenCredential for DefaultAzureCredential {}

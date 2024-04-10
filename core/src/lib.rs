@@ -6,6 +6,27 @@
 use std::{collections::HashMap, fmt, marker::PhantomData};
 pub use url::Url;
 
+pub mod builders;
+
+#[derive(Clone, Debug)]
+pub struct DiagnosticsOptions {
+    pub application_id: Option<String>,
+    pub logging: bool,
+    pub logging_content: bool,
+    pub telemetry: bool,
+}
+
+impl Default for DiagnosticsOptions {
+    fn default() -> Self {
+        Self {
+            application_id: None,
+            logging: true,
+            logging_content: false,
+            telemetry: true,
+        }
+    }
+}
+
 #[derive(Debug)]
 pub struct Error {}
 
@@ -136,4 +157,4 @@ impl From<u16> for StatusCode {
     }
 }
 
-pub trait TokenCredential {}
+pub trait TokenCredential: fmt::Debug {}

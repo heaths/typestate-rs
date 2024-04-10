@@ -30,6 +30,14 @@ jobs:
         run: |
           cargo doc --all-features --no-deps
           rm target/doc/.lock
+          cat <<EOF > 'target/doc/index.html'
+          <!DOCTYPE html>
+          <html>
+            <head>
+              <meta http-equiv="refresh" content="0; url=azure_typestate_example/index.html" />
+            </head>
+          </html>
+          EOF
       - name: Set up pages
         uses: actions/configure-pages@v5
       - name: Upload artifact

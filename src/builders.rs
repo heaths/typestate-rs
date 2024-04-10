@@ -27,6 +27,23 @@ pub struct BlobClientBuilder<C, A> {
     _phantom: PhantomData<(C, A)>,
 }
 
+impl<C, A> BlobClientBuilder<C, A> {
+    /// Stable workaround for [RFC2528: Type-changing struct update syntax](https://github.com/rust-lang/rfcs/blob/master/text/2528-type-changing-struct-update-syntax.md).
+    ///
+    /// Tracking issue: <https://github.com/rust-lang/rust/issues/86555>.
+    fn into<C2, A2>(self) -> BlobClientBuilder<C2, A2> {
+        BlobClientBuilder {
+            endpoint: self.endpoint,
+            credential: self.credential,
+            connection_string: self.connection_string,
+            sas_token: self.sas_token,
+            api_version: self.api_version,
+            options: self.options,
+            _phantom: PhantomData,
+        }
+    }
+}
+
 impl<C, A> Default for BlobClientBuilder<C, A> {
     fn default() -> Self {
         Self {
@@ -55,12 +72,7 @@ impl BlobClientBuilder<Unset, Unset> {
         let url = Url::parse(endpoint.as_ref())?;
         Ok(BlobClientBuilder {
             endpoint: Some(url),
-            credential: self.credential,
-            connection_string: self.connection_string,
-            sas_token: self.sas_token,
-            api_version: self.api_version,
-            options: self.options,
-            _phantom: PhantomData,
+            ..self.into()
         })
     }
 
@@ -70,13 +82,8 @@ impl BlobClientBuilder<Unset, Unset> {
         connect_string: impl Into<String>,
     ) -> BlobClientBuilder<Set, Set> {
         BlobClientBuilder {
-            endpoint: self.endpoint,
-            credential: self.credential,
             connection_string: Some(connect_string.into()),
-            sas_token: self.sas_token,
-            api_version: self.api_version,
-            options: self.options,
-            _phantom: PhantomData,
+            ..self.into()
         }
     }
 }
@@ -89,26 +96,16 @@ impl BlobClientBuilder<Set, Unset> {
         credential: Arc<dyn TokenCredential>,
     ) -> BlobClientBuilder<Set, Set> {
         BlobClientBuilder {
-            endpoint: self.endpoint,
             credential: Some(credential.clone()),
-            connection_string: self.connection_string,
-            sas_token: self.sas_token,
-            api_version: self.api_version,
-            options: self.options,
-            _phantom: PhantomData,
+            ..self.into()
         }
     }
 
     /// Sets the SAS token to use for the endpoint.
     pub fn with_sas_token(self, sas_token: impl Into<String>) -> BlobClientBuilder<Set, Set> {
         BlobClientBuilder {
-            endpoint: self.endpoint,
-            credential: self.credential,
-            connection_string: self.connection_string,
             sas_token: Some(sas_token.into()),
-            api_version: self.api_version,
-            options: self.options,
-            _phantom: PhantomData,
+            ..self.into()
         }
     }
 }
@@ -119,13 +116,8 @@ impl BlobClientBuilder<Set, Set> {
     /// Overrides the `api-version` query parameter to the endpoint.
     pub fn with_api_version(self, api_version: impl Into<String>) -> Self {
         BlobClientBuilder {
-            endpoint: self.endpoint,
-            credential: self.credential,
-            connection_string: self.connection_string,
-            sas_token: self.sas_token,
             api_version: Some(api_version.into()),
-            options: self.options,
-            _phantom: PhantomData,
+            ..self.into()
         }
     }
 

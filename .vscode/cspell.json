@@ -5,6 +5,7 @@
     "clippy",
     "rustlang",
     "rustup",
+    "serde",
     "typestate"
   ],
   "overrides": [

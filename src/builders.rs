@@ -28,9 +28,10 @@ pub struct BlobClientBuilder<C, A> {
 }
 
 impl<C, A> BlobClientBuilder<C, A> {
-    /// Stable workaround for [RFC2528: Type-changing struct update syntax](https://github.com/rust-lang/rfcs/blob/master/text/2528-type-changing-struct-update-syntax.md).
+    /// Stable workaround for [RFC 2528: Type-changing struct update syntax](https://github.com/rust-lang/rfcs/blob/master/text/2528-type-changing-struct-update-syntax.md).
     ///
-    /// Tracking issue: <https://github.com/rust-lang/rust/issues/86555>.
+    /// Tracking issue for stabilization: <https://github.com/rust-lang/rust/issues/86555>.
+    #[inline(always)]
     fn into<C2, A2>(self) -> BlobClientBuilder<C2, A2> {
         BlobClientBuilder {
             endpoint: self.endpoint,

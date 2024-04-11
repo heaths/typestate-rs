@@ -27,11 +27,11 @@ use azure_typestate_example::BlobClient;
 use std::sync::Arc;
 
 fn new_blob_client(endpoint: &str) -> Result<BlobClient> {
-    Ok(BlobClient::builder()
-        .with_endpoint(endpoint)?
+    BlobClient::builder()
+        .with_endpoint(endpoint)
         .with_credential(Arc::new(DefaultAzureCredential::default()))
         .with_retry(RetryOptions::none())
-        .build())
+        .build()
 }
 ```
 

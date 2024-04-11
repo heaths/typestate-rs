@@ -9,14 +9,14 @@ use std::sync::Arc;
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let client = BlobClient::builder()
-        .with_endpoint("https://api.contoso.com/endpoint")?
+        .with_endpoint("https://api.contoso.com/endpoint")
         .with_credential(Arc::new(DefaultAzureCredential::default()))
         .with_diagnostics(DiagnosticsOptions {
             logging_content: true,
             ..Default::default()
         })
         .with_retry(RetryOptions::none())
-        .build();
+        .build()?;
 
     let model = Model {
         name: "foo".to_string(),

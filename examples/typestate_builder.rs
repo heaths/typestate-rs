@@ -1,11 +1,10 @@
 // Copyright 2024 Heath Stewart.
 // Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 
-use std::sync::Arc;
-
 use azure_core::{DiagnosticsOptions, RetryOptions};
 use azure_identity::DefaultAzureCredential;
 use azure_typestate_example::{models::Model, BlobClient};
+use std::sync::Arc;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {

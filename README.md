@@ -16,7 +16,7 @@ The same pattern could be used for client methods as well, though a simple build
 
 ## Documentation
 
-The type parameters are not included in [documentation](https://github.com/heaths/typestate-rs), such that developers would see all
+The type parameters are not included in [documentation](https://heaths.dev/typestate-rs), such that developers would see all
 client builder methods documented together.
 
 ## License

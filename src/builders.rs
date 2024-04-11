@@ -1,14 +1,19 @@
 // Copyright 2024 Heath Stewart.
 // Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 
+//! Client builders.
+
 use crate::BlobClient;
 use azure_core::{Pipeline, Result, RetryOptions, TokenCredential, Url};
 use std::{marker::PhantomData, sync::Arc};
 
+#[doc(hidden)]
 pub enum Set {}
+
+#[doc(hidden)]
 pub enum Unset {}
 
-/// Helps builds a [`BlobClient`].
+/// Helps builds a [`crate::BlobClient`].
 pub struct BlobClientBuilder<C, A> {
     endpoint: Option<Url>,
     credential: Option<Arc<dyn TokenCredential>>,

@@ -3,6 +3,7 @@
 
 use std::sync::Arc;
 
+use azure_core::{DiagnosticsOptions, RetryOptions};
 use azure_identity::DefaultAzureCredential;
 use azure_typestate_example::{models::Model, BlobClient};
 
@@ -11,6 +12,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let client = BlobClient::builder()
         .with_endpoint("https://api.contoso.com/endpoint")?
         .with_credential(Arc::new(DefaultAzureCredential::default()))
+        .with_diagnostics(DiagnosticsOptions {
+            logging_content: true,
+            ..Default::default()
+        })
+        .with_retry(RetryOptions::none())
         .build();
 
     let model = Model {

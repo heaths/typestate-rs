@@ -4,23 +4,26 @@
 //! Client builders.
 
 use crate::BlobClient;
-use azure_core::{Pipeline, Result, RetryOptions, TokenCredential, Url};
+use azure_core::{builders::ClientBuilder, Pipeline, Result, TokenCredential, Url};
 use std::{marker::PhantomData, sync::Arc};
 
 #[doc(hidden)]
+#[derive(Debug)]
 pub enum Set {}
 
 #[doc(hidden)]
+#[derive(Debug)]
 pub enum Unset {}
 
 /// Helps builds a [`crate::BlobClient`].
+#[derive(Clone, Debug)]
 pub struct BlobClientBuilder<C, A> {
     endpoint: Option<Url>,
     credential: Option<Arc<dyn TokenCredential>>,
     connection_string: Option<String>,
     sas_token: Option<String>,
     api_version: Option<String>,
-    retry: Option<RetryOptions>,
+    options: ClientBuilder,
     _phantom: PhantomData<(C, A)>,
 }
 
@@ -32,7 +35,7 @@ impl<C, A> Default for BlobClientBuilder<C, A> {
             connection_string: None,
             sas_token: None,
             api_version: None,
-            retry: None,
+            options: ClientBuilder::default(),
             _phantom: PhantomData,
         }
     }
@@ -55,7 +58,7 @@ impl BlobClientBuilder<Unset, Unset> {
             connection_string: self.connection_string,
             sas_token: self.sas_token,
             api_version: self.api_version,
-            retry: self.retry,
+            options: self.options,
             _phantom: PhantomData,
         })
     }
@@ -71,7 +74,7 @@ impl BlobClientBuilder<Unset, Unset> {
             connection_string: Some(connect_string.into()),
             sas_token: self.sas_token,
             api_version: self.api_version,
-            retry: self.retry,
+            options: self.options,
             _phantom: PhantomData,
         }
     }
@@ -89,7 +92,7 @@ impl BlobClientBuilder<Set, Unset> {
             connection_string: self.connection_string,
             sas_token: self.sas_token,
             api_version: self.api_version,
-            retry: self.retry,
+            options: self.options,
             _phantom: PhantomData,
         }
     }
@@ -102,7 +105,7 @@ impl BlobClientBuilder<Set, Unset> {
             connection_string: self.connection_string,
             sas_token: Some(sas_token.into()),
             api_version: self.api_version,
-            retry: self.retry,
+            options: self.options,
             _phantom: PhantomData,
         }
     }
@@ -117,23 +120,13 @@ impl BlobClientBuilder<Set, Set> {
             connection_string: self.connection_string,
             sas_token: self.sas_token,
             api_version: Some(api_version.into()),
-            retry: self.retry,
+            options: self.options,
             _phantom: PhantomData,
         }
     }
 
-    /// Sets [`RetryOptions`] for connections made by the [`BlobClient`].
-    pub fn with_retry(self, options: RetryOptions) -> Self {
-        BlobClientBuilder {
-            endpoint: self.endpoint,
-            credential: self.credential,
-            connection_string: self.connection_string,
-            sas_token: self.sas_token,
-            api_version: self.api_version,
-            retry: Some(options),
-            _phantom: PhantomData,
-        }
-    }
+    // Add all core client options to this builder.
+    azure_core::client_options!(options);
 
     /// Builds the [`BlobClient`] ready to use.
     pub fn build(self) -> BlobClient {

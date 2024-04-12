@@ -14,6 +14,24 @@ use models::Model;
 /// Storage client to access blobs.
 ///
 /// See [`BlobClient::builder`] to construct a `BlobClient`.
+///
+/// # Examples
+///
+/// Construct a client using an endpoint.
+///
+/// ``` no_run
+/// use azure_identity::DefaultAzureCredential;
+/// use azure_typestate_example::BlobClient;
+/// use std::sync::Arc;
+///
+/// # fn main() -> azure_core::Result<()> {
+/// let client = BlobClient::builder()
+///     .with_endpoint("https://mycontainer.blobs.azure.net")
+///     .with_credential(Arc::new(DefaultAzureCredential::default()))
+///     .build()?;
+/// # Ok(())
+/// # }
+/// ```
 pub struct BlobClient {
     #[allow(dead_code)]
     pub(crate) pipeline: Pipeline,

@@ -33,9 +33,9 @@ impl BlobClient {
     ///
     /// # fn main() -> azure_core::Result<()> {
     /// let client = BlobClient::builder()
-    ///     .with_endpoint("https://mycontainer.blobs.azure.net")?
+    ///     .with_endpoint("https://mycontainer.blobs.azure.net")
     ///     .with_credential(Arc::new(DefaultAzureCredential::default()))
-    ///     .build();
+    ///     .build()?;
     /// # Ok(())
     /// # }
     /// ```
@@ -56,7 +56,7 @@ impl BlobClient {
     /// # async fn main() -> azure_core::Result<()> {
     /// # let client: BlobClient = BlobClient::builder()
     /// #   .with_connection_string("")
-    /// #   .build();
+    /// #   .build()?;
     /// let model = Model {
     ///     name: "name".to_string(),
     ///     value: "value".to_string(),

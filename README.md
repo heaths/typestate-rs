@@ -1,7 +1,7 @@
 # Typestate Builder Example
 
 This is an example of the typestate builder pattern we could use for client construction in Azure SDKs for Rust.
-You can open [examples/typestate_builder.rs](examples/typestate_builder.rs) in GitHub Codespaces
+You can open [examples/with_credential.rs](examples/with_credential.rs) in GitHub Codespaces
 to familiarize yourself with the developer experience.
 
 This pattern guides the developer into only valid variants. In this example, they must first specify either an endpoint or connection string,
@@ -20,6 +20,10 @@ The following example shows how to construct a client using a builder. After typ
 from a few blanket implementations and connection options. Depending on the connection option you specified e.g., the endpoint,
 you'll see authentication options. Only when all required options are populated will you see general options such as setting retry options.
 
+### Using a credential
+
+After calling either `with_endpoint` or `with_credential`, calling `with_connection_string` is no longer possible.
+
 ```rust
 use azure_core::{Result, RetryOptions};
 use azure_identity::DefaultAzureCredential;
@@ -30,6 +34,22 @@ fn new_blob_client(endpoint: &str) -> Result<BlobClient> {
     BlobClient::builder()
         .with_endpoint(endpoint)
         .with_credential(Arc::new(DefaultAzureCredential::default()))
+        .with_retry(RetryOptions::none())
+        .build()
+}
+```
+
+### Using a connection string
+
+While not advised because the account key may be leaked, after calling `with_connection_string`, calling `with_endpoint` or `with_credential` is no longer possible.
+
+```rust
+use azure_core::{Result, RetryOptions};
+use azure_typestate_example::BlobClient;
+
+fn new_blob_client(endpoint: &str) -> Result<BlobClient> {
+    BlobClient::builder()
+        .with_connection_string("DefaultEndpointsProtocol=https;AccountName=contoso;AccountKey=*****;EndpointSuffix=core.windows.net")
         .with_retry(RetryOptions::none())
         .build()
 }
